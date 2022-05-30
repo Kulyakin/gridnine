@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime }) => {
+const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime, onClick }) => {
     return (
         <Form className="mt-5">
             <h3>Сортировать</h3>
@@ -9,6 +9,7 @@ const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime }) => {
                 <div key={`default-${type}`} className="mb-3 mt-3">
                     <Form.Check
                         className="text"
+                        name='group1'
                         type={type}
                         id={`default-${type}`}
                         label={` - по возрастанию цены`}
@@ -18,6 +19,7 @@ const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime }) => {
                     />
                     <Form.Check
                         className="text"
+                        name='group1'
                         type={type}
                         id={`default-${type}`}
                         label={` - по убыванию цене`}
@@ -27,6 +29,7 @@ const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime }) => {
                     />
                     <Form.Check
                         className="text"
+                        name='group1'
                         type={type}
                         id={`default-${type}`}
                         label={` - по времени в пути`}
