@@ -20,7 +20,7 @@ const PriceSort = ({ sortByLowerPrice, sortByUpperPrice, sortByTime }) => {
                         name='group1'
                         type={type}
                         id={`default-${type}`}
-                        label={` - по убыванию цене`}
+                        label={` - по убыванию цены`}
                         onClick={sortByLowerPrice}
                     />
                     <Form.Check

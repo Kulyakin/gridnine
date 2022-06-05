@@ -4,7 +4,7 @@ import { Button, Row } from 'react-bootstrap'
 import { Clock, ArrowRight } from 'react-bootstrap-icons'
 
 const Ticket = ({
-    index,
+    total,
     caption,
     arrivalDate,
     arrivalCity,
@@ -59,11 +59,17 @@ const Ticket = ({
                     </div>
                     <div>{`${aTime} ${arrivalDate}`}</div>
                 </div>
+                {total > 600 ? 
                 <div className="wrap">
-                    <div className="item"></div>
-                    <div className="transfer">1 пересадка{}</div>
-                    <div className="item"></div>
-                </div>
+                        <div className="item"></div>
+                        <div className="transfer">1 пересадка</div>
+                        <div className="item"></div>
+                    </div> : 
+                    <div className="wrap">
+                        <div className="item"></div>
+                        <div className="transfer">Без пересадок</div>
+                        <div className="item"></div>
+                    </div>}
                 <div>{'Рейс выполняет ' + caption}</div>
                 <div className="hr mt-1" />
                 {aTime2 &&
@@ -85,11 +91,17 @@ const Ticket = ({
                         </div>
                         <div>{`${aTime2} ${arrivalDate2}`}</div>
                     </div>
-                    <div className="wrap">
+                    {total > 600 ? 
+                <div className="wrap">
                         <div className="item"></div>
                         <div className="transfer">1 пересадка</div>
                         <div className="item"></div>
-                    </div>
+                    </div> : 
+                    <div className="wrap">
+                        <div className="item"></div>
+                        <div className="transfer">Без пересадок</div>
+                        <div className="item"></div>
+                    </div>}
                     <div>{'Рейс выполняет ' + caption2}</div>
                 </div>
                 }

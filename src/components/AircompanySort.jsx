@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const AircompanySort = () => {
+const AircompanySort = ({ companySort }) => {
     return (
         <Form>
             <h3>Авиакомпании</h3>
@@ -11,13 +11,15 @@ const AircompanySort = () => {
                         className="text"
                         type={type}
                         id={`default-${type + '5'}`}
-                        label={` - ${'Polish Airlines'}`}
+                        label={` - ${'Air France'}`}
+                        onClick={() => companySort('Air France')}
                     />
                     <Form.Check
                         className="text"
                         type={type}
                         id={`default-${type + '6'}`}
-                        label={` - ${'Аэрофлот'}`}
+                        label={` - ${'KLM'}`}
+                        onClick={() => companySort('KLM')}
                     />
                 </div>
             ))}

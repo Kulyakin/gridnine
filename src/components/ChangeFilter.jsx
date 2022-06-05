@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const ChangeFilter = () => {
+const ChangeFilter = ({ oneTransfer, withoutTransfer }) => {
     return (
         <Form>
             <h3 className="mb-3">Фильтровать</h3>
@@ -10,14 +10,18 @@ const ChangeFilter = () => {
                     <Form.Check
                         className="text"
                         type={type}
+                        name='group1'
                         id={`default-${type + '2'}`}
                         label={` - 1 пересадка`}
+                        onChange={oneTransfer}
                     />
                     <Form.Check
                         className="text"
                         type={type}
+                        name='group1'
                         id={`default-${type}`}
                         label={` - без пересадок`}
+                        onChange={withoutTransfer}
                     />
                 </div>
             ))}
