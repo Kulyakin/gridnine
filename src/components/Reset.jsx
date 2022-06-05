@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-const Reset = () => {
+const Reset = ({ reset }) => {
     return (
         <div>
-            <Button>Сброс</Button>
+            <Button
+            onClick={reset}>Сброс</Button>
         </div>
     )
 }

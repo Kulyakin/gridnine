@@ -18,7 +18,7 @@ const MainPage = () => {
     const [lowPrice, setLowPrice] = useState(1)
     const [highPrice, setHighPrice] = useState(200000)
 
-    const [filter, setFilter] = useState()
+    const [filter, setFilter] = useState([])
 
     const [pageSize, setPageSize] = useState(2) // Кол-во элементов пагинации
 
@@ -29,22 +29,32 @@ const MainPage = () => {
     }, [])
 
     const flights = []
+    
     result.map((key) => {
         return flights.push(key.flight)
     })
-
+// сортировка работает
     const sortByUpperPrice = () => {
-        console.log('Work in progress')
+        let upFilter = []
+        upFilter = flights.sort(upSort)
+        upFilter = paginate(flights, pageSize)
+        setFilter(() => [...upFilter])
     }
 
     const sortByLowerPrice = () => {
-        return flights.sort(downSort)
+        let lowFilter = []
+        lowFilter = flights.sort(downSort)
+        lowFilter = paginate(flights, pageSize)
+        setFilter(() => [...lowFilter])
     }
 
     const sortByTime = () => {
-        console.log('Work in progress')
+        let sortTime = []
+        sortTime = flights.sort(minTimeSort)
+        sortTime = paginate(flights, pageSize)
+        setFilter(() => [...sortTime])
     }
-
+// сортировка работает
     // Пагинация
     const paginate = (flights, pageSize) => {
         let kek = []
@@ -68,9 +78,16 @@ const MainPage = () => {
     }
 */
     // Форматирование времени
-
+    
     const flightsPaginated = paginate(flights, pageSize)
 
+    useEffect(() => {
+        setFilter([...flightsPaginated]) // перерендер при изменение pagesize
+    }, [result, pageSize])
+    
+
+
+/*
     let niceArray = []
 
     useEffect(() => {
@@ -84,7 +101,7 @@ const MainPage = () => {
                 Number(key.price.total.amount) >= lowPrice
         ))
     }
-
+*/
     ////////////// сортировка по цене
 
     function upSort(a, b) {
@@ -96,9 +113,7 @@ const MainPage = () => {
         }
         return 0
     }
-
-    //console.log(flights.sort(upSort))
-
+                                                                            /////// полностью рабочий функционал
     function downSort(a, b) {
         if (Number(a.price.total.amount) > Number(b.price.total.amount)) {
             return -1
@@ -109,9 +124,8 @@ const MainPage = () => {
         return 0
     }
 
-    
-
     ////////////// сортировка по цене
+    
     ////////////// сортировка по времени
 
     function minTimeSort(a, b) {
@@ -129,8 +143,6 @@ const MainPage = () => {
         }
         return 0
     }
-
-    //console.log(flights.sort(minTimeSort))
 
     ////////////// сортировка по времени
     ////////////// сортировка по пересадкам
@@ -151,7 +163,7 @@ const MainPage = () => {
         return 0
     }
 
-   // console.log(flights.sort(oneTransferSort))
+   console.log(flights.sort(oneTransferSort))
 /*
     function oneTransferCheckbox(array) {
         return array.filter((key) => {
@@ -163,16 +175,31 @@ const MainPage = () => {
 
     ////////////// сортировка по пересадкам
 
+    // Сброс
+
+    const handleShowMore = () => {
+        setPageSize((pageSize) => pageSize + 2)
+    }
+
+    const reset = () => {
+            setPageSize((pageSize) => pageSize = 2)
+            setFilter([...flightsPaginated])  ///// Полностью рабочий
+        }
+
+    // Сброс
+
+
+
     return (
         <Container>
-            {flightsPaginated !== [] && (
+            {filter !== [] && (
                 <Row className="mt-3">
                     <Col sm={3}>
                         <div className="sort">
                             <PriceSort
-                                sortByUpperPrice={sortByUpperPrice}
-                                sortByLowerPrice={sortByLowerPrice}
-                                sortByTime={sortByTime}
+                                sortByUpperPrice={() => sortByUpperPrice()}
+                                sortByLowerPrice={() => sortByLowerPrice()}
+                                sortByTime={() => sortByTime()}
                             />
                             <ChangeFilter />
                             <PriceFilter
@@ -180,24 +207,17 @@ const MainPage = () => {
                                 setHighPrice={setHighPrice}
                             />
                             <AircompanySort />
-                            <Reset />
+                            <Reset reset={() => reset()}/>
                         </div>
                     </Col>
                     <Col sm={9}>
-                        {flightsPaginated.map((key) => (
+                        {filter.map((key) => (
                             <Ticket
                                 key={key.price.total.amount}
                                 caption={key.carrier.caption}
-                                time={time(
-                                    key.legs[0].segments[0].departureDate
-                                )}
-                                departureDate={date(
-                                    key.legs[0].segments[0].departureDate
-                                )}
-                                departureCity={
-                                    key.legs[0].segments[0].departureCity
-                                        .caption
-                                }
+                                time={time(key.legs[0].segments[0].departureDate)}
+                                departureDate={date(key.legs[0].segments[0].departureDate)}
+                                departureCity={key.legs[0].segments[0].departureCity.caption}
                                 departureAirport={
                                     key.legs[0].segments[0].departureAirport
                                         .caption
@@ -257,12 +277,41 @@ const MainPage = () => {
                                 }
                             />
                         ))}
-                        <Pagination setPageSize={setPageSize} />
+                        <Pagination handleShowMore={() => handleShowMore()} />
                     </Col>
                 </Row>
             )}
         </Container>
     )
+}
+
+MainPage.defaultProps = {
+    aTime2: 'Нет данных',
+    caption: 'Нет данных',
+    arrivalDate: 'Нет данных',
+    arrivalCity: 'Нет данных',
+    arrivalAirport: 'Нет данных',
+    uid: 'Нет данных',
+    departureCity: 'Нет данных',
+    departureAirport: 'Нет данных',
+    departureUid: 'Нет данных',
+    price: 'Нет данных',
+
+    caption2: 'Нет данных',
+    arrivalDate2: 'Нет данных',
+    arrivalCity2: 'Нет данных',
+    arrivalAirport2: 'Нет данных',
+    uid2: 'Нет данных',
+    departureCity2: 'Нет данных',
+    departureAirport2: 'Нет данных',
+    departureUid2: 'Нет данных',
+    departureDate2: 'Нет данных',
+    departureDate: 'Нет данных',
+    time: 'Нет данных',
+    time2: 'Нет данных',
+    aTime: 'Нет данных',
+    arrivalDate: 'Нет данных'
+
 }
 
 export default MainPage
