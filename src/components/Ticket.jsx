@@ -28,7 +28,8 @@ const Ticket = ({
     time,
     time2,
     aTime,
-    aTime2
+    aTime2,
+    totalTime
 }) => {
     return (
         <Row className="mt-4">
@@ -54,7 +55,7 @@ const Ticket = ({
                         <div>{`${time} ${departureDate}`}</div>
                     </div>
                     <div>
-                        <Clock /> 23 ч 35 мин
+                        <Clock /> {totalTime}
                     </div>
                     <div>{`${aTime} ${arrivalDate}`}</div>
                 </div>
@@ -80,7 +81,7 @@ const Ticket = ({
                     <div className="d-flex justify-content-between align-items-center mb-1">
                         <div>{`${time2} ${departureDate2}`}</div>
                         <div>
-                            <Clock /> 23 ч 35 мин
+                            <Clock /> {totalTime}
                         </div>
                         <div>{`${aTime2} ${arrivalDate2}`}</div>
                     </div>
@@ -104,34 +105,6 @@ const Ticket = ({
             </Button>
         </Row>
     )
-}
-
-Ticket.defaultProps = {
-    aTime2: 'Нет данных',
-    caption: 'Нет данных',
-    arrivalDate: 'Нет данных',
-    arrivalCity: 'Нет данных',
-    arrivalAirport: 'Нет данных',
-    uid: 'Нет данных',
-    departureCity: 'Нет данных',
-    departureAirport: 'Нет данных',
-    departureUid: 'Нет данных',
-    price: 'Нет данных',
-
-    caption2: 'Нет данных',
-    arrivalDate2: 'Нет данных',
-    arrivalCity2: 'Нет данных',
-    arrivalAirport2: 'Нет данных',
-    uid2: 'Нет данных',
-    departureCity2: 'Нет данных',
-    departureAirport2: 'Нет данных',
-    departureUid2: 'Нет данных',
-    departureDate2: 'Нет данных',
-    departureDate: 'Нет данных',
-    time: 'Нет данных',
-    time2: 'Нет данных',
-    aTime: 'Нет данных',
-    arrivalDate: 'Нет данных'
 }
 
 export default Ticket

@@ -8,10 +8,11 @@ import PriceSort from '../components/PriceSort'
 import Ticket from '../components/Ticket'
 import Reset from '../components/Reset'
 import axios from 'axios'
-import { REACT_APP_API_URL } from '../constants/constants'
+import { DATA, REACT_APP_API_URL } from '../constants/constants'
 import Pagination from '../components/Pagination'
 import moment from 'moment'
 import 'moment/locale/ru'
+import { render } from '@testing-library/react'
 
 const MainPage = () => {
     const [result, setResult] = useState([])
@@ -20,6 +21,8 @@ const MainPage = () => {
 
     const [filter, setFilter] = useState([])
 
+
+    const [pag, setPag] = useState([])
     const [pageSize, setPageSize] = useState(2) // Кол-во элементов пагинации
 
     useEffect(() => {
@@ -33,6 +36,26 @@ const MainPage = () => {
     result.map((key) => {
         return flights.push(key.flight)
     })
+
+    let kek = []
+    kek = flights.map((key) => {
+        if (key.legs[0].segments.length == 1) {
+            key.legs[0].segments.push(DATA)
+        } else if (key.legs[1].segments.length == 1) {
+            key.legs[1].segments.push(DATA)
+        } else if (key.legs[0].segments.length == 2) {
+            key.legs[0].segments[1].arrivalCity = {
+                "caption": 'kek'
+            }
+            key.legs[1].segments[0].departureCity = {
+                "caption": key.legs[1].segments[0].departureAirport.caption
+            } 
+        }
+        }
+    )
+
+    console.log(flights)
+
 // сортировка работает
     const sortByUpperPrice = () => {
         let upFilter = []
@@ -72,26 +95,37 @@ const MainPage = () => {
     const date = (date) => {
         return moment(date).format('D MMMM dd')
     }
-/*
-    const totalTime = (date) => {
-        return moment().format('HH ч mm мин')
+
+    const totalTime = (duration1, duration2) => {
+        let minSumm = ''
+        minSumm = Number(duration1 + duration2)
+        let hours = Math.trunc(minSumm/60);
+        let minutes = minSumm % 60;
+        return hours + ' ч ' + minutes + ' мин';
     }
-*/
+
+    console.log()
+
+
     // Форматирование времени
     
     const flightsPaginated = paginate(flights, pageSize)
 
     useEffect(() => {
         setFilter([...flightsPaginated]) // перерендер при изменение pagesize
-    }, [result, pageSize])
+    }, [result])
+
+    useEffect(() => {
+        setFilter([...filter]) // перерендер при изменение pagesize
+    }, [pageSize])
     
+    console.log(filter)
 
 
-/*
     let niceArray = []
 
     useEffect(() => {
-        setFilter(priceSortirovka(niceArray))
+        setFilter(paginate(priceSortirovka(niceArray), pageSize))
     }, [lowPrice, highPrice])
 
     function priceSortirovka(niceArray) {
@@ -101,7 +135,7 @@ const MainPage = () => {
                 Number(key.price.total.amount) >= lowPrice
         ))
     }
-*/
+
     ////////////// сортировка по цене
 
     function upSort(a, b) {
@@ -163,7 +197,7 @@ const MainPage = () => {
         return 0
     }
 
-   console.log(flights.sort(oneTransferSort))
+   //console.log(flights.sort(oneTransferSort))
 /*
     function oneTransferCheckbox(array) {
         return array.filter((key) => {
@@ -188,8 +222,6 @@ const MainPage = () => {
 
     // Сброс
 
-
-
     return (
         <Container>
             {filter !== [] && (
@@ -213,9 +245,11 @@ const MainPage = () => {
                     <Col sm={9}>
                         {filter.map((key) => (
                             <Ticket
-                                key={key.price.total.amount}
+                                key={Math.random()}
                                 caption={key.carrier.caption}
                                 time={time(key.legs[0].segments[0].departureDate)}
+                                totalTime={totalTime(key.legs[0].duration, key.legs[1].duration)}
+
                                 departureDate={date(key.legs[0].segments[0].departureDate)}
                                 departureCity={key.legs[0].segments[0].departureCity.caption}
                                 departureAirport={
@@ -232,7 +266,7 @@ const MainPage = () => {
                                     key.legs[0].segments[1].arrivalDate
                                 )}
                                 arrivalCity={
-                                    key.legs[0].segments[1].arrivalCity.caption
+                                    key.legs[0].segments[1].arrivalCity.caption 
                                 }
                                 arrivalAirport={
                                     key.legs[0].segments[1].arrivalAirport
@@ -278,40 +312,12 @@ const MainPage = () => {
                             />
                         ))}
                         <Pagination handleShowMore={() => handleShowMore()} />
+                        <div>{pageSize}</div>
                     </Col>
                 </Row>
             )}
         </Container>
     )
-}
-
-MainPage.defaultProps = {
-    aTime2: 'Нет данных',
-    caption: 'Нет данных',
-    arrivalDate: 'Нет данных',
-    arrivalCity: 'Нет данных',
-    arrivalAirport: 'Нет данных',
-    uid: 'Нет данных',
-    departureCity: 'Нет данных',
-    departureAirport: 'Нет данных',
-    departureUid: 'Нет данных',
-    price: 'Нет данных',
-
-    caption2: 'Нет данных',
-    arrivalDate2: 'Нет данных',
-    arrivalCity2: 'Нет данных',
-    arrivalAirport2: 'Нет данных',
-    uid2: 'Нет данных',
-    departureCity2: 'Нет данных',
-    departureAirport2: 'Нет данных',
-    departureUid2: 'Нет данных',
-    departureDate2: 'Нет данных',
-    departureDate: 'Нет данных',
-    time: 'Нет данных',
-    time2: 'Нет данных',
-    aTime: 'Нет данных',
-    arrivalDate: 'Нет данных'
-
 }
 
 export default MainPage
