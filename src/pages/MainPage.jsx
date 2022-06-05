@@ -22,7 +22,7 @@ const MainPage = () => {
     const [filter, setFilter] = useState([])
 
 
-    const [pag, setPag] = useState([])
+    const [filterPaginated, setFilterPaginated] = useState([])
     const [pageSize, setPageSize] = useState(2) // Кол-во элементов пагинации
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const MainPage = () => {
             key.legs[1].segments.push(DATA)
         } else if (key.legs[0].segments.length == 2) {
             key.legs[0].segments[1].arrivalCity = {
-                "caption": 'kek'
+                "caption": ''
             }
             key.legs[1].segments[0].departureCity = {
                 "caption": key.legs[1].segments[0].departureAirport.caption
@@ -60,28 +60,25 @@ const MainPage = () => {
     const sortByUpperPrice = () => {
         let upFilter = []
         upFilter = flights.sort(upSort)
-        upFilter = paginate(flights, pageSize)
         setFilter(() => [...upFilter])
     }
 
     const sortByLowerPrice = () => {
         let lowFilter = []
         lowFilter = flights.sort(downSort)
-        lowFilter = paginate(flights, pageSize)
         setFilter(() => [...lowFilter])
     }
 
     const sortByTime = () => {
         let sortTime = []
         sortTime = flights.sort(minTimeSort)
-        sortTime = paginate(flights, pageSize)
         setFilter(() => [...sortTime])
     }
 // сортировка работает
     // Пагинация
     const paginate = (flights, pageSize) => {
         let kek = []
-        kek = flights.splice(0, pageSize)
+        kek = flights.slice(0, pageSize)
         return kek
     }
 
@@ -109,15 +106,13 @@ const MainPage = () => {
 
     // Форматирование времени
     
-    const flightsPaginated = paginate(flights, pageSize)
-
     useEffect(() => {
-        setFilter([...flightsPaginated]) // перерендер при изменение pagesize
+        setFilter([...flights])
     }, [result])
 
     useEffect(() => {
-        setFilter([...filter]) // перерендер при изменение pagesize
-    }, [pageSize])
+        setFilterPaginated(paginate(filter, pageSize)) // перерендер при изменение pagesize
+    }, [filter, pageSize])
     
     console.log(filter)
 
@@ -125,7 +120,7 @@ const MainPage = () => {
     let niceArray = []
 
     useEffect(() => {
-        setFilter(paginate(priceSortirovka(niceArray), pageSize))
+        setFilter(priceSortirovka(niceArray))
     }, [lowPrice, highPrice])
 
     function priceSortirovka(niceArray) {
@@ -216,15 +211,15 @@ const MainPage = () => {
     }
 
     const reset = () => {
-            setPageSize((pageSize) => pageSize = 2)
-            setFilter([...flightsPaginated])  ///// Полностью рабочий
+            setPageSize((pageSize) => pageSize = 2) ///// Полностью рабочий
+            setFilter([...flights])
         }
 
     // Сброс
 
     return (
         <Container>
-            {filter !== [] && (
+            {filterPaginated !== [] && (
                 <Row className="mt-3">
                     <Col sm={3}>
                         <div className="sort">
@@ -243,7 +238,7 @@ const MainPage = () => {
                         </div>
                     </Col>
                     <Col sm={9}>
-                        {filter.map((key) => (
+                        {filterPaginated.map((key) => (
                             <Ticket
                                 key={Math.random()}
                                 caption={key.carrier.caption}
@@ -312,7 +307,6 @@ const MainPage = () => {
                             />
                         ))}
                         <Pagination handleShowMore={() => handleShowMore()} />
-                        <div>{pageSize}</div>
                     </Col>
                 </Row>
             )}

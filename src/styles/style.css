@@ -1,3 +1,13 @@
+body.dark-theme {
+    background: white;
+    color: black
+}
+
+body {
+    background: #111111;
+    color: #f4f4f4
+}
+
 h3 {
     font-size: 16px;
 }
@@ -43,6 +53,7 @@ h3 {
     width: auto;
     margin: 0.5em;
 }
+
 .item {
     flex: auto;
     background-color: gray;
