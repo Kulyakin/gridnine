@@ -232,6 +232,7 @@ const MainPage = () => {
         niceArray = flights.filter(
             (key) => key.carrier.caption === value
         )
+        niceArray = niceArray.sort(upSort)
         return setFilter([...niceArray])
     }
 

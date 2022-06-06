@@ -102,7 +102,7 @@ const Ticket = ({
                         <div className="transfer">Без пересадок</div>
                         <div className="item"></div>
                     </div>}
-                    <div>{'Рейс выполняет ' + caption2}</div>
+                    <div className='mb-1'>{'Рейс выполняет ' + caption2}</div>
                 </div>
                 }
             </div>
