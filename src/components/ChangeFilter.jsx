@@ -10,7 +10,7 @@ const ChangeFilter = ({ oneTransfer, withoutTransfer }) => {
                     <Form.Check
                         className="text"
                         type={type}
-                        name='group1'
+                        name="group1"
                         id={`default-${type + '2'}`}
                         label={` - 1 пересадка`}
                         onChange={oneTransfer}
@@ -18,7 +18,7 @@ const ChangeFilter = ({ oneTransfer, withoutTransfer }) => {
                     <Form.Check
                         className="text"
                         type={type}
-                        name='group1'
+                        name="group1"
                         id={`default-${type}`}
                         label={` - без пересадок`}
                         onChange={withoutTransfer}

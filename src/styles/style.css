@@ -1,11 +1,11 @@
-body.dark-theme {
+body {
     background: white;
-    color: black
+    color: black;
 }
 
-body {
+body.dark-theme {
     background: #111111;
-    color: #f4f4f4
+    color: #f4f4f4;
 }
 
 h3 {

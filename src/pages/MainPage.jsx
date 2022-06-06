@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Row } from 'react-bootstrap'
+import { Button, Container, Row } from 'react-bootstrap'
 import Col from 'react-bootstrap/Col'
+import { Moon } from 'react-bootstrap-icons'
 import AircompanySort from '../components/AircompanySort'
 import ChangeFilter from '../components/ChangeFilter'
 import PriceFilter from '../components/PriceFilter'
@@ -28,27 +29,26 @@ const MainPage = () => {
     }, [])
 
     const flights = []
-    
+
     result.map((key) => {
         return flights.push(key.flight)
     })
 
-    let kek = []
-    kek = flights.map((key) => {
+    let formatFlights = []
+    formatFlights = flights.map((key) => {
         if (key.legs[0].segments.length == 1) {
             key.legs[0].segments.push(DATA)
         } else if (key.legs[1].segments.length == 1) {
             key.legs[1].segments.push(DATA)
         } else if (key.legs[0].segments.length == 2) {
             key.legs[0].segments[1].arrivalCity = {
-                "caption": ''
+                caption: ''
             }
             key.legs[1].segments[0].departureCity = {
-                "caption": key.legs[1].segments[0].departureAirport.caption
-            } 
+                caption: key.legs[1].segments[0].departureAirport.caption
+            }
         }
-        }
-    )
+    })
 
     // Пагинация
 
@@ -75,9 +75,9 @@ const MainPage = () => {
     const totalTime = (duration1, duration2) => {
         let minSumm = ''
         minSumm = Number(duration1 + duration2)
-        let hours = Math.trunc(minSumm/60);
-        let minutes = minSumm % 60;
-        return hours + ' ч ' + minutes + ' мин';
+        let hours = Math.trunc(minSumm / 60)
+        let minutes = minSumm % 60
+        return hours + ' ч ' + minutes + ' мин'
     }
 
     const total = (duration1, duration2) => {
@@ -87,7 +87,7 @@ const MainPage = () => {
     }
 
     // Форматирование времени
-    
+
     useEffect(() => {
         setFilter([...flights])
     }, [result])
@@ -102,21 +102,21 @@ const MainPage = () => {
         let upFilter = []
         upFilter = flights.sort(upSort)
         setFilter(() => [...upFilter])
-        setPageSize((pageSize) => pageSize = 2)
+        setPageSize((pageSize) => (pageSize = 2))
     }
 
     const sortByLowerPrice = () => {
         let lowFilter = []
         lowFilter = flights.sort(downSort)
         setFilter(() => [...lowFilter])
-        setPageSize((pageSize) => pageSize = 2)
+        setPageSize((pageSize) => (pageSize = 2))
     }
 
     const sortByTime = () => {
         let sortTime = []
         sortTime = flights.sort(minTimeSort)
         setFilter(() => [...sortTime])
-        setPageSize((pageSize) => pageSize = 2)
+        setPageSize((pageSize) => (pageSize = 2))
     }
 
     function upSort(a, b) {
@@ -179,7 +179,7 @@ const MainPage = () => {
         let noTransfer = []
         noTransfer = flights.sort(withoutTransferSort)
         setFilter(() => [...noTransfer])
-        setPageSize((pageSize) => pageSize = 2)
+        setPageSize((pageSize) => (pageSize = 2))
     }
 
     function oneTransferSort(a, b) {
@@ -202,13 +202,12 @@ const MainPage = () => {
         let oneTransfer = []
         oneTransfer = flights.sort(oneTransferSort)
         setFilter(() => [...oneTransfer])
-        setPageSize((pageSize) => pageSize = 2)
+        setPageSize((pageSize) => (pageSize = 2))
     }
 
     // Сортировка по пересадкам
 
     // Сортировка по цене из импутов
-
 
     useEffect(() => {
         setFilter(priceSortirovka())
@@ -229,13 +228,11 @@ const MainPage = () => {
 
     function companySort(value) {
         let niceArray = []
-        niceArray = flights.filter(
-            (key) => key.carrier.caption === value
-        )
+        niceArray = flights.filter((key) => key.carrier.caption === value)
         niceArray = niceArray.sort(upSort)
+        setPageSize((pageSize) => (pageSize = 2))
         return setFilter([...niceArray])
     }
-
 
     // Сортировка по Авиакомпании
 
@@ -247,15 +244,22 @@ const MainPage = () => {
 
     // Показать еще
 
-
     // Сброс Фильтров
 
     const reset = () => {
-            setPageSize((pageSize) => pageSize = 2) ///// Полностью рабочий
-            setFilter([...flights])
-        }
+        setPageSize((pageSize) => (pageSize = 2)) ///// Полностью рабочий
+        setFilter([...flights])
+    }
 
     // Сброс Фильтров
+
+    // Ночная тема, чтобы не мешать другим свои светлым экраном
+
+    function lol() {
+        document.body.classList.toggle('dark-theme')
+    }
+
+    // Ночная тема, чтобы не мешать другим свои светлым экраном
 
     return (
         <Container>
@@ -263,23 +267,28 @@ const MainPage = () => {
                 <Row className="mt-3">
                     <Col sm={3}>
                         <div className="sort">
+                            <Button className="mt-5" onClick={lol}>
+                                <Moon className="" />
+                            </Button>
                             <PriceSort
                                 sortByUpperPrice={() => sortByUpperPrice()}
                                 sortByLowerPrice={() => sortByLowerPrice()}
                                 sortByTime={() => sortByTime()}
                             />
-                            <ChangeFilter 
-                            oneTransfer={() => {oneTransfer()}}
-                            withoutTransfer={() => {withoutTransfer()}}
+                            <ChangeFilter
+                                oneTransfer={() => {
+                                    oneTransfer()
+                                }}
+                                withoutTransfer={() => {
+                                    withoutTransfer()
+                                }}
                             />
                             <PriceFilter
                                 setLowPrice={setLowPrice}
                                 setHighPrice={setHighPrice}
                             />
-                            <AircompanySort 
-                            companySort={companySort}
-                            />
-                            <Reset reset={() => reset()}/>
+                            <AircompanySort companySort={companySort} />
+                            <Reset reset={() => reset()} />
                         </div>
                     </Col>
                     <Col sm={9}>
@@ -287,12 +296,24 @@ const MainPage = () => {
                             <Ticket
                                 key={Math.random()}
                                 caption={key.carrier.caption}
-                                time={time(key.legs[0].segments[0].departureDate)}
-                                totalTime={totalTime(key.legs[0].duration, key.legs[1].duration)}
-                                total={total(key.legs[0].duration, key.legs[1].duration)}
-
-                                departureDate={date(key.legs[0].segments[0].departureDate)}
-                                departureCity={key.legs[0].segments[0].departureCity.caption}
+                                time={time(
+                                    key.legs[0].segments[0].departureDate
+                                )}
+                                totalTime={totalTime(
+                                    key.legs[0].duration,
+                                    key.legs[1].duration
+                                )}
+                                total={total(
+                                    key.legs[0].duration,
+                                    key.legs[1].duration
+                                )}
+                                departureDate={date(
+                                    key.legs[0].segments[0].departureDate
+                                )}
+                                departureCity={
+                                    key.legs[0].segments[0].departureCity
+                                        .caption
+                                }
                                 departureAirport={
                                     key.legs[0].segments[0].departureAirport
                                         .caption
@@ -307,7 +328,7 @@ const MainPage = () => {
                                     key.legs[0].segments[1].arrivalDate
                                 )}
                                 arrivalCity={
-                                    key.legs[0].segments[1].arrivalCity.caption 
+                                    key.legs[0].segments[1].arrivalCity.caption
                                 }
                                 arrivalAirport={
                                     key.legs[0].segments[1].arrivalAirport

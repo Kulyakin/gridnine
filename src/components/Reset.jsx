@@ -4,8 +4,7 @@ import { Button } from 'react-bootstrap'
 const Reset = ({ reset }) => {
     return (
         <div>
-            <Button
-            onClick={reset}>Сброс</Button>
+            <Button onClick={reset}>Сброс</Button>
         </div>
     )
 }

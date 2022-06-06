@@ -11,14 +11,14 @@ const AircompanySort = ({ companySort }) => {
                         className="text"
                         type={type}
                         id={`default-${type + '5'}`}
-                        label={` - ${'Air France'}`}
+                        label={` - ${'Air France'} от 23163 р.`}
                         onClick={() => companySort('Air France')}
                     />
                     <Form.Check
                         className="text"
                         type={type}
                         id={`default-${type + '6'}`}
-                        label={` - ${'KLM'}`}
+                        label={` - ${'KLM'} от 24114 р.`}
                         onClick={() => companySort('KLM')}
                     />
                 </div>
